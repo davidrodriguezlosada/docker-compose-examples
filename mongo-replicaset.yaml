@@ -1,0 +1,55 @@
+# This file will start a Mongo server in replicaset mode
+#
+# In order to use it you will have to do two things:
+# * Edit hosts file under Windows\System32\drivers\etc and add these three lines to it:
+#     127.0.10.1 mongo1
+#     127.0.10.2 mongo2
+#     127.0.10.3 mongo3
+# * Enter first docker and manually run the rs-init.sh script on it:
+#     docker exec mongo1 -it
+#     mongo
+#     (copy and paste the script)
+
+version: "3.8"
+services:
+  mongo1:
+    container_name: mongo1
+    image: mongo:4.4.6
+    volumes:
+      - ./data/mongors/data1:/data/db
+      - ./rs-init.sh:/docker-entrypoint-initdb.d/rs-init.sh
+    networks:
+      - mongors-network
+    ports:
+      - "127.0.10.1:27017:27017"
+    links:
+      - mongo2
+      - mongo3
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  mongo2:
+    container_name: mongo2
+    image: mongo:4.4.6
+    volumes:
+      - ./data/mongors/data2:/data/db
+    networks:
+      - mongors-network
+    ports:
+      - "127.0.10.2:27017:27017"
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  mongo3:
+    container_name: mongo3
+    image: mongo:4.4.6
+    volumes:
+      - ./data/mongors/data3:/data/db
+    networks:
+      - mongors-network
+    ports:
+      - "127.0.10.3:27017:27017"
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+
+networks:
+  mongors-network:
+    driver: bridge
