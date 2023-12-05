@@ -8,7 +8,7 @@ If you want to use any of these templates, you will have to install [Docker](htt
 ### Usage
 You can run any file by using the regular docker-compose command:
 
-    docker-compose -f <filename> up
+    docker-compose -f <filename> up -d
 
 ## Contributing
 Feel free to contribute to this project by submitting issues, feature requests, or pull requests. Your contributions are highly appreciated.
