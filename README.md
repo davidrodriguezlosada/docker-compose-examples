@@ -10,6 +10,10 @@ You can run any file by using the regular docker-compose command:
 
     docker-compose -f <filename> up -d
 
+You can stop all the services with
+
+    docker-compose -f <filename> down
+
 ## Contributing
 Feel free to contribute to this project by submitting issues, feature requests, or pull requests. Your contributions are highly appreciated.
 
